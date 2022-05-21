@@ -5,6 +5,7 @@ import com.example.finalproject.repository.TestRepository;
 import com.example.finalproject.service.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,21 +17,25 @@ public class TestService implements ITestService{
     private TestRepository testRepository;
 
     @Override
+    @Transactional
     public Optional<Test> findOne(Long id) {
         return testRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public List<Test> findAll() {
         return testRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Test save(Test test) {
         return testRepository.save(test);
     }
 
     @Override
+    @Transactional
     public Test update(Long id, Test entity) {
         Optional<Test> test = testRepository.findById(id);
         if(test.isPresent()){
@@ -44,16 +49,19 @@ public class TestService implements ITestService{
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         testRepository.deleteAll();
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         testRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public Optional<Test> getTestWithQuestionsById(Long id) {
         return testRepository.getTestWithQuestionsById(id);
     }

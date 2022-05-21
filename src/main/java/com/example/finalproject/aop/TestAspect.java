@@ -1,6 +1,6 @@
 package com.example.finalproject.aop;
 
-import com.example.finalproject.models.Vacancy;
+import com.example.finalproject.models.Test;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -9,33 +9,33 @@ import org.aspectj.lang.reflect.MethodSignature;
 
 @Aspect
 @Slf4j
-public class VacancyAspect {
+public class TestAspect {
 
-    @Pointcut("execution(* com.example.finalproject.service.impl.VacancyService.save(..))")
-    public void addVacancy(){
-
-    }
-
-    @Pointcut("execution(* com.example.finalproject.service.impl.VacancyService.findAll(..))")
-    public void findAllVacancies(){
+    @Pointcut("execution(* com.example.finalproject.service.impl.TestService.save(..))")
+    public void addTest(){
 
     }
 
-    @Before("findAllVacancies()")
+    @Pointcut("execution(* com.example.finalproject.service.impl.TestService.findAll(..))")
+    public void findAllTests(){
+
+    }
+
+    @Before("findAllTests()")
     public void before(JoinPoint joinPoint){
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         log.info("Before getting all vacancies...");
     }
 
 
-    @After("findAllVacancies()")
+    @After("findAllTests()")
     public void after(JoinPoint joinPoint){
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         log.info("Vacancies:" , joinPoint.getArgs());
     }
 
 
-    @AfterReturning(pointcut = "findAllVacancies()",
+    @AfterReturning(pointcut = "findAllTests()",
             returning = "object")
     public void afterReturning(JoinPoint joinPoint, Object object) {
         log.info("After returning");
@@ -44,17 +44,17 @@ public class VacancyAspect {
     }
 
 
-    @Around("addVacancy()")
+    @Around("addTest()")
     public Object around(ProceedingJoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        if (methodSignature.getName().equals("addVacancy")) {
+        if (methodSignature.getName().equals("addTest")) {
             Object[] args = joinPoint.getArgs();
             for (Object arg : args) {
-                if (arg instanceof Vacancy) {
-                    Vacancy vacancy = (Vacancy) arg;
+                if (arg instanceof Test) {
+                    Test test = (Test) arg;
                     log.info("Around");
-                    log.info("Added vacancy id:", vacancy.getId());
-                    log.info("Added vacancy name:", vacancy.getName());
+                    log.info("Added test id:", test.getId());
+                    log.info("Added test name:", test.getName());
                 }
             }
         }
@@ -67,6 +67,4 @@ public class VacancyAspect {
         }
         return object;
     }
-
-
 }
